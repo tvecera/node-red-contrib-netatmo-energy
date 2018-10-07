@@ -1,0 +1,82 @@
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/javascript">
+  RED.nodes.registerType('setroomthermpoint', {
+    category: 'Netatmo Energy',
+    color: '#FECC49',
+    defaults: {
+      name: { value: "" },
+      auth: { value: "", type: "netatmoconfig" },
+      home_id: { value: '', required: true },
+      room_id: { value: '', required: true },
+      mode: { value: '', required: true },
+      temp: { value: '', required: false },
+      endtime: { value: '', required: false }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "bridge.png",
+    label: function () {
+      return this.name || "setroomthermpoint";
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="setroomthermpoint">
+    <h4>Netatmo configuration</h4>
+    <div class="form-row">
+        <label for="node-input-auth"><i class="icon-tag"></i> Config</label>
+        <input type="text" id="node-input-auth" placeholder="Add netatmo auth">
+    </div>
+    <div class="form-row">
+        <label for="node-input-home_id"><i class="icon-tag"></i> Home ID</label>
+        <input type="text" id="node-input-home_id" placeholder="5bb52472c8bd............">
+    </div>
+    <div class="form-row">
+        <label for="node-input-room_id"><i class="icon-tag"></i> Room ID</label>
+        <input type="text" id="node-input-room_id" placeholder="1229......">
+    </div>
+    <div class="form-row">
+        <label for="node-input-mode"><i class="icon-tag"></i> Mode</label>
+        <select id="node-input-mode" placeholder="manual">
+            <option value="manual">manual</option>
+            <option value="home">home</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-temp"><i class="icon-tag"></i> Temp</label>
+        <input type="text" id="node-input-temp" placeholder="22.5">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endtime"><i class="icon-tag"></i> Endtime</label>
+        <input type="text" id="node-input-endtime" placeholder="180">
+    </div>
+    <h4>Node configuration</h4>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="setroomthermpoint">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="setroomthermpoint">
+   <p>This node set a manual temperature to a room. or switch back to home mode.</p>
+   <p>Documentation: <a href="https://dev.netatmo.com/resources/technical/reference/energy/setthermmode">https://dev.netatmo.com/resources/technical/reference/energy/setthermmode</a></p>
+   <ul>
+     <li><b>home_id</b> - (required) Id of the home</li>
+     <li><b>room_id</b> - (required) Id of the room</li>
+     <li><b>mode</b> - (required) The mode you are applying to this room - manual OR home</li>
+     <li><b>temp</b> - (Optional) Manual temperature to apply</li>
+     <li><b>endtime</b> - (Optional) End time in second, eg. 180</li>
+   </ul>
+</script>

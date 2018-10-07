@@ -1,0 +1,282 @@
+[
+  {
+    "id": "b7e36175.63f3f",
+    "type": "tab",
+    "label": "Netatmo Energy Test Flow",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "ad4ea11d.68071",
+    "type": "homesdata",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "auth": "128d9a7d.613c16",
+    "home_id": "",
+    "gateway_types": "",
+    "x": 296.5,
+    "y": 290,
+    "wires": [
+      [
+        "23ee7f9d.fc3f2"
+      ]
+    ]
+  },
+  {
+    "id": "23ee7f9d.fc3f2",
+    "type": "debug",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "false",
+    "x": 481.5,
+    "y": 289,
+    "wires": []
+  },
+  {
+    "id": "6bdee60f.1db688",
+    "type": "inject",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "topic": "",
+    "payload": "{\"mode\":\"hg\"}",
+    "payloadType": "json",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 142.5,
+    "y": 89,
+    "wires": [
+      [
+        "35c5f252.3d9fae"
+      ]
+    ]
+  },
+  {
+    "id": "83b5bf69.e3b3d",
+    "type": "homestatus",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "auth": "128d9a7d.613c16",
+    "home_id": "",
+    "device_types": "",
+    "x": 295.5,
+    "y": 343,
+    "wires": [
+      [
+        "c0673e66.1ef1c"
+      ]
+    ]
+  },
+  {
+    "id": "35c5f252.3d9fae",
+    "type": "setthermmode",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "auth": "128d9a7d.613c16",
+    "home_id": "",
+    "mode": "away",
+    "endtime": "180",
+    "x": 375.5,
+    "y": 136,
+    "wires": [
+      [
+        "ac5aab82.11e758"
+      ]
+    ]
+  },
+  {
+    "id": "78e64f48.b910f",
+    "type": "inject",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "topic": "",
+    "payload": "{\"mode\":\"away\"}",
+    "payloadType": "json",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 134,
+    "y": 142,
+    "wires": [
+      [
+        "35c5f252.3d9fae"
+      ]
+    ]
+  },
+  {
+    "id": "8137ff6a.a7bde",
+    "type": "inject",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "topic": "",
+    "payload": "{\"mode\":\"schedule\"}",
+    "payloadType": "json",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 121,
+    "y": 195,
+    "wires": [
+      [
+        "35c5f252.3d9fae"
+      ]
+    ]
+  },
+  {
+    "id": "3e7b67a2.f52f08",
+    "type": "inject",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 130.5,
+    "y": 287,
+    "wires": [
+      [
+        "ad4ea11d.68071"
+      ]
+    ]
+  },
+  {
+    "id": "4aceda6f.7e2064",
+    "type": "inject",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 114.5,
+    "y": 344,
+    "wires": [
+      [
+        "83b5bf69.e3b3d"
+      ]
+    ]
+  },
+  {
+    "id": "c0673e66.1ef1c",
+    "type": "debug",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "false",
+    "x": 479.5,
+    "y": 343,
+    "wires": []
+  },
+  {
+    "id": "ac5aab82.11e758",
+    "type": "debug",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "false",
+    "x": 597.5,
+    "y": 136,
+    "wires": []
+  },
+  {
+    "id": "a8a8486d.7336b8",
+    "type": "inject",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 139.5,
+    "y": 31,
+    "wires": [
+      [
+        "35c5f252.3d9fae"
+      ]
+    ]
+  },
+  {
+    "id": "24cfcbff.da4444",
+    "type": "setroomthermpoint",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "auth": "128d9a7d.613c16",
+    "home_id": "",
+    "room_id": "",
+    "mode": "home",
+    "temp": "22.5",
+    "endtime": "",
+    "x": 315.5,
+    "y": 408,
+    "wires": [
+      [
+        "ec3923c1.e4658"
+      ]
+    ]
+  },
+  {
+    "id": "890794b3.11ed48",
+    "type": "inject",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 112,
+    "y": 408,
+    "wires": [
+      [
+        "24cfcbff.da4444"
+      ]
+    ]
+  },
+  {
+    "id": "ec3923c1.e4658",
+    "type": "debug",
+    "z": "b7e36175.63f3f",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "false",
+    "x": 516.5,
+    "y": 407,
+    "wires": []
+  },
+  {
+    "id": "128d9a7d.613c16",
+    "type": "netatmoconfig",
+    "z": "",
+    "client_id": "",
+    "client_secret": "",
+    "username": "",
+    "password": ""
+  }
+]
