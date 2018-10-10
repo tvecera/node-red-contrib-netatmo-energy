@@ -66,7 +66,7 @@ Documentation: https://dev.netatmo.com/resources/technical/reference/energy/sett
 
 Node config can be overwritten by message payload.
 
-## Node SETTHERMMODE
+## Node SETROOMTHERMPOINT
 
 This node set a manual temperature to a room.
 
