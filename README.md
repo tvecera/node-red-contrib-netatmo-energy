@@ -6,7 +6,7 @@
 
 # Node-RED nodes to talk to the Netatmo thermostat
 [![npm version](https://img.shields.io/npm/v/node-red-contrib-netatmo-energy.svg?maxAge=2592000)](https://www.npmjs.com/package/node-red-contrib-netatmo-energy) [![Downloads](https://img.shields.io/npm/dm/node-red-contrib-netatmo-energy.svg?maxAge=2592000)](https://www.npmjs.com/package/node-red-contrib-netatmo-energy)
-[![Build Status](https://travis-ci.org/biancode/node-red-contrib-netatmo-energy.svg?branch=master)](https://travis-ci.org/biancode/node-red-contrib-netatmo-energy)
+[![Build Status](https://travis-ci.org/tvecera/node-red-contrib-netatmo-energy.svg?branch=master)](https://travis-ci.org/tvecera/node-red-contrib-netatmo-energy)
 
 
 Library using forked netatmo library - https://github.com/karbassi/netatmo.
