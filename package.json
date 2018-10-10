@@ -12,10 +12,14 @@
     "url": "https://github.com/tvecera/node-red-contrib-netatmo-energy/issues"
   },
   "homepage": "https://github.com/tvecera/node-red-contrib-netatmo-energy#readme",
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "dateformat": "^2.0.0",
     "request": "^2.88.0",
-    "moment": "^2.22.2"
+    "moment": "^2.22.2",
+    "mocha": "^5.2.0"
   },
   "keywords": [
     "node-red",
