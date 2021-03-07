@@ -33,7 +33,8 @@
       "netatmo-homesdata": "src/netatmo-homesdata.js",
       "netatmo-homestatus": "src/netatmo-homestatus.js",
       "netatmo-setthermmode": "src/netatmo-setthermmode.js",
-      "netatmo-setroomthermpoint": "src/netatmo-setroomthermpoint.js"
+      "netatmo-setroomthermpoint": "src/netatmo-setroomthermpoint.js",
+      "netatmo-getroommeasure": "src/netatmo-getroommeasure.js"
     }
   }
 }

@@ -1,0 +1,112 @@
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/javascript">
+  RED.nodes.registerType('getroommeasure', {
+    category: 'Netatmo Energy',
+    color: '#FECC49',
+    defaults: {
+      name: { value: "" },
+      auth: { value: "", type: "netatmoconfig" },
+      home_id: { value: "", required: true },
+      room_id: { value: "", required: true },
+      scale: { value: "max", required: true },
+      measure_type: { value: "temperature", required: true },
+      date_begin: { value: "", required: false },
+      date_end: { value: "", required: false },
+      limit: { value: "", required: false },
+      optimize: { value: "true", required: false },
+      real_time: { value: "false", required: false }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "bridge.png",
+    label: function () {
+      return this.name || "getroommeasure";
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="getroommeasure">
+    <h4>Netatmo configuration</h4>
+    <div class="form-row">
+        <label for="node-input-auth"><i class="icon-tag"></i> Config</label>
+        <input type="text" id="node-input-auth" placeholder="Add netatmo auth">
+    </div>
+    <div class="form-row">
+        <label for="node-input-home_id"><i class="icon-tag"></i> Home ID</label>
+        <input type="text" id="node-input-home_id" placeholder="5bb52472c8bd............">
+    </div>
+    <div class="form-row">
+        <label for="node-input-room_id"><i class="icon-tag"></i> Room ID</label>
+        <input type="text" id="node-input-room_id" placeholder="2974t4............">
+    </div>
+    <div class="form-row">
+        <label for="node-input-scale"><i class="icon-tag"></i> Scale</label>
+        <select id="node-input-scale" placeholder="Step between measurements">
+            <option value="30min">30 minutes</option>
+            <option value="1hour">1 hour</option>
+            <option value="3hours">3 hours</option>
+            <option value="1day">1 day</option>
+            <option value="1week">1 week</option>
+            <option value="1month">1 month</option>
+            <option value="max">max</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-measure_type" title="any mix of temperature,sp_temperature,min_temp,max_temp,date_min_temp"><i class="icon-tag"></i> Type</label>
+        <input type="text" id="node-input-measure_type">
+    </div>
+    <div class="form-row">
+        <label for="node-input-date_begin"><i class="icon-tag"></i> Date Begin</label>
+        <input type="number" id="node-input-date_begin" placeholder="Timestamp of the first measure to retrieve">
+    </div>
+    <div class="form-row">
+        <label for="node-input-date_end"><i class="icon-tag"></i> Date End</label>
+        <input type="number" id="node-input-date_end" placeholder="Timestamp of the last measure to retrieve">
+    </div>
+    <div class="form-row">
+        <label for="node-input-limit"><i class="icon-tag"></i> Limit</label>
+        <input type="number" id="node-input-limit" placeholder="Maximum number of measurements (max are 1024)">
+    </div>
+    <div class="form-row">
+        <label for="node-input-optimize"><i class="icon-tag"></i> Optimize</label>
+        <select id="node-input-optimize" placeholder="Determines the format of the answer">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-real_time"><i class="icon-tag"></i> Real Time</label>
+        <select id="node-input-real_time" placeholder="To get exact timestamps, use true">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="getroommeasure">
+  <p>This node returns data from a Room.</p>
+  <p>Documentation: <a href="https://dev.netatmo.com/apidocumentation/energy#getroommeasure">https://dev.netatmo.com/apidocumentation/energy#getroommeasure</a></p>
+  <ul>
+    <li><b>home_id</b> - (required) Id of the home</li>
+    <li><b>room_id</b> - (required) Id of the room</li>
+    <li><b>scale</b> - (required) Step between measurements. Values: 30min, 1hour, 3hours, 1day, 1week, 1month, max</li>
+    <li><b>type</b> - (required) Type of requested measurements. Values: temperature, sp_temperature, min_temp, max_temp, date_min_temp</li>
+    <li><b>date_begin</b> - (Optional) Timestamp of the first measure to retrieve. Default is null.</li>
+    <li><b>date_end</b> - (Optional) Timestamp of the last measure to retrieve (default and max are 1024). Default is null.</li>
+    <li><b>limit</b> - (Optional) Maximum number of measurements (default and max Are 1024)</li>
+    <li><b>optimize</b> - (Optional) Determines the format of the answer. Default is true. For mobile apps we recommend True and False if bandwidth isn't an issue as it is easier to parse.</li>
+    <li><b>real_time</b> - (Optional) If scale different than max, timestamps are by default offset + scale/2. To get exact timestamps, use true. Default is false</li>
+  </ul>
+</script>
