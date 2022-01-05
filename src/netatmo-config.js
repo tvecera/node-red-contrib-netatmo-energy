@@ -20,6 +20,8 @@ module.exports = function (RED) {
     this.client_secret = config.client_secret;
     this.username = config.username;
     this.password = config.password;
+    const netatmo = require('./netatmo-energy-api.js');
+    this.api = new netatmo(this);
   }
 
   RED.nodes.registerType("netatmoconfig", NetatmoConfigNode);
