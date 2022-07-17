@@ -21,8 +21,7 @@ module.exports = function (RED) {
     const node = this;
 
     this.on('input', function (msg) {
-      const netatmo = require('./netatmo-energy-api.js');
-      const api = new netatmo(this.auth);
+      const api = this.auth.api
 
       api.homesData((err, homes) => {
         msg.payload = { homes: homes };
