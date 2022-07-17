@@ -1,5 +1,5 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -12,17 +12,17 @@
  * limitations under the License.
  */
 module.exports = function (RED) {
-  "use strict";
+    "use strict"
 
-  function NetatmoConfigNode(config) {
-    RED.nodes.createNode(this, config);
-    this.client_id = config.client_id;
-    this.client_secret = config.client_secret;
-    this.username = config.username;
-    this.password = config.password;
-    const netatmo = require('./netatmo-energy-api.js');
-    this.api = new netatmo(this);
-  }
+    function NetatmoConfigNode(config) {
+        RED.nodes.createNode(this, config)
+        this.client_id = config.client_id
+        this.client_secret = config.client_secret
+        this.username = config.username
+        this.password = config.password
+        const netatmo = require('./netatmo-energy-api.js')
+        this.api = new netatmo(this)
+    }
 
-  RED.nodes.registerType("netatmoconfig", NetatmoConfigNode);
-};
+    RED.nodes.registerType("netatmoconfig", NetatmoConfigNode)
+}

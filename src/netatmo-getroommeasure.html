@@ -12,32 +12,32 @@
   limitations under the License.
 -->
 <script type="text/javascript">
-  RED.nodes.registerType('getroommeasure', {
-    category: 'Netatmo Energy',
-    color: '#FECC49',
-    defaults: {
-      name: { value: "" },
-      auth: { value: "", type: "netatmoconfig" },
-      home_id: { value: "", required: true },
-      room_id: { value: "", required: true },
-      scale: { value: "max", required: true },
-      measure_type: { value: "temperature", required: true },
-      date_begin: { value: "", required: false },
-      date_end: { value: "", required: false },
-      limit: { value: "", required: false },
-      optimize: { value: "true", required: false },
-      real_time: { value: "false", required: false }
-    },
-    inputs: 1,
-    outputs: 1,
-    icon: "bridge.png",
-    label: function () {
-      return this.name || "getroommeasure";
-    }
-  });
+    RED.nodes.registerType('getroommeasure', {
+        category: 'Netatmo Energy',
+        color: '#FECC49',
+        defaults: {
+            name: {value: ''},
+            auth: {value: '', type: 'netatmoconfig'},
+            home_id: {value: '', required: true},
+            room_id: {value: '', required: true},
+            scale: {value: '1day', required: true},
+            measure_type: {value: 'temperature', required: true},
+            date_begin: {value: '', required: false},
+            date_end: {value: '', required: false},
+            limit: {value: '', required: false},
+            optimize: {value: 'true', required: false},
+            real_time: {value: 'false', required: false},
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'bridge.png',
+        label: function () {
+            return this.name || 'getroommeasure'
+        }
+    })
 </script>
 
-<script type="text/x-red" data-template-name="getroommeasure">
+<script data-template-name="getroommeasure" type="text/x-red">
     <h4>Netatmo configuration</h4>
     <div class="form-row">
         <label for="node-input-auth"><i class="icon-tag"></i> Config</label>
@@ -65,7 +65,14 @@
     </div>
     <div class="form-row">
         <label for="node-input-measure_type" title="any mix of temperature,sp_temperature,min_temp,max_temp,date_min_temp"><i class="icon-tag"></i> Type</label>
-        <input type="text" id="node-input-measure_type">
+        <select id="node-input-measure_type" placeholder="Measure type" multiple>
+            <option value="temperature">Temperature</option>
+            <option value="sp_temperature">Temperature setpoint</option>
+            <option value="min_temp">Minimal temperature</option>
+            <option value="max_temp">Maximal temperature</option>
+            <option value="date_min_temp">Timestamp of min temperature</option>
+            <option value="date_max_temp">Timestamp of max temperature</option>
+        </select>
     </div>
     <div class="form-row">
         <label for="node-input-date_begin"><i class="icon-tag"></i> Date Begin</label>
@@ -95,7 +102,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="getroommeasure">
+<script data-help-name="getroommeasure" type="text/x-red">
   <p>This node returns data from a Room.</p>
   <p>Documentation: <a href="https://dev.netatmo.com/apidocumentation/energy#getroommeasure">https://dev.netatmo.com/apidocumentation/energy#getroommeasure</a></p>
   <ul>

@@ -12,21 +12,21 @@
   limitations under the License.
 -->
 <script type="text/javascript">
-  RED.nodes.registerType('netatmoconfig', {
-    category: 'config',
-    defaults: {
-      client_id: { value: '', required: true },
-      client_secret: { value: '', required: true },
-      username: { value: '', required: true },
-      password: { value: '', required: true }
-    },
-    label: function () {
-      return "Netatmo credentials";
-    }
-  });
+    RED.nodes.registerType('netatmoconfig', {
+        category: 'config',
+        defaults: {
+            client_id: {value: '', required: true},
+            client_secret: {value: '', required: true},
+            username: {value: '', required: true},
+            password: {value: '', required: true}
+        },
+        label: function () {
+            return "Netatmo credentials";
+        }
+    });
 </script>
 
-<script type="text/x-red" data-template-name="netatmoconfig">
+<script data-template-name="netatmoconfig" type="text/x-red">
     <div class="form-row">
         <label for="node-config-input-client_id"><i class="icon-tag"></i>&nbsp;Client ID</label>
         <input type="text" id="node-config-input-client_id" placeholder="5aa68c8378c75f55558beb9c">
@@ -45,5 +45,5 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="netatmoconfig">
+<script data-help-name="netatmoconfig" type="text/x-red">
 </script>

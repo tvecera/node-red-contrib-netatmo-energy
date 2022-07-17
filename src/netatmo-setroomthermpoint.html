@@ -12,28 +12,28 @@
   limitations under the License.
 -->
 <script type="text/javascript">
-  RED.nodes.registerType('setroomthermpoint', {
-    category: 'Netatmo Energy',
-    color: '#FECC49',
-    defaults: {
-      name: { value: "" },
-      auth: { value: "", type: "netatmoconfig" },
-      home_id: { value: '', required: true },
-      room_id: { value: '', required: true },
-      mode: { value: '', required: true },
-      temp: { value: '', required: false },
-      endtime: { value: '', required: false }
-    },
-    inputs: 1,
-    outputs: 1,
-    icon: "bridge.png",
-    label: function () {
-      return this.name || "setroomthermpoint";
-    }
-  });
+    RED.nodes.registerType('setroomthermpoint', {
+        category: 'Netatmo Energy',
+        color: '#FECC49',
+        defaults: {
+            name: {value: ''},
+            auth: {value: '', type: 'netatmoconfig'},
+            home_id: {value: '', required: true},
+            room_id: {value: '', required: true},
+            mode: {value: '', required: true},
+            temp: {value: '', required: false},
+            endtime: {value: '', required: false},
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'bridge.png',
+        label: function () {
+            return this.name || 'setroomthermpoint'
+        },
+    })
 </script>
 
-<script type="text/x-red" data-template-name="setroomthermpoint">
+<script data-template-name="setroomthermpoint" type="text/x-red">
     <h4>Netatmo configuration</h4>
     <div class="form-row">
         <label for="node-input-auth"><i class="icon-tag"></i> Config</label>
@@ -52,6 +52,7 @@
         <select id="node-input-mode" placeholder="manual">
             <option value="manual">manual</option>
             <option value="home">home</option>
+            <option value="max">max</option>
         </select>
     </div>
     <div class="form-row">
@@ -69,14 +70,14 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="setroomthermpoint">
+<script data-help-name="setroomthermpoint" type="text/x-red">
    <p>This node set a manual temperature to a room, or switch back to home mode.</p>
-   <p>Documentation: <a href="https://dev.netatmo.com/resources/technical/reference/energy/setroomthermpoint">https://dev.netatmo.com/resources/technical/reference/energy/setroomthermpoint</a></p>
+   <p>Documentation: <a href="https://dev.netatmo.com/apidocumentation/energy#setroomthermpoint">https://dev.netatmo.com/apidocumentation/energy#setroomthermpoint</a></p>
    <ul>
      <li><b>home_id</b> - (required) Id of the home</li>
      <li><b>room_id</b> - (required) Id of the room</li>
-     <li><b>mode</b> - (required) The mode you are applying to this room - manual OR home</li>
-     <li><b>temp</b> - (Optional) Manual temperature to apply</li>
+     <li><b>mode</b> - (required) The mode you are applying to this room - manual, max, home</li>
+     <li><b>temp</b> - (Optional) Manual temperature to apply. Required if mode is manual</li>
      <li><b>endtime</b> - (Optional) End time in second, eg. 180</li>
    </ul>
 </script>

@@ -1,5 +1,5 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -11,48 +11,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const netatmoLogger = require("./netatmo-logger")
+
 module.exports = function (RED) {
-  "use strict";
+    "use strict"
 
-  function NetatmoHomeStatus(config) {
+    function _preparePayload(config, inputMessage) {
+        let data = inputMessage && inputMessage.payload ? inputMessage.payload : config
 
-    RED.nodes.createNode(this, config);
-    this.auth = RED.nodes.getNode(config.auth);
-    const node = this;
-
-    this.on('input', function (msg) {
-      const api = this.auth.api
-
-      let payload = {
-        home_id: config.home_id,
-        device_types: config.device_types
-      };
-
-      if (msg && msg.payload) {
-        // use home id from msg payload
-        if (msg.payload.home_id) {
-          payload.home_id = msg.payload.home_id;
+        return {
+            home_id: data.home_id ? data.home_id : config.home_id,
+            device_types: data.device_types ? data.device_types : config.device_types,
         }
-        // use device_types from msg payload
-        if (msg.payload.device_types) {
-          payload.device_types = msg.payload.device_types;
-        }
-      }
+    }
 
-      api.homeStatus(payload, (err, home) => {
-        msg.payload = { home: home };
-        node.send(msg);
-      });
+    function NetatmoHomeStatus(config) {
+        RED.nodes.createNode(this, config)
+        this.auth = RED.nodes.getNode(config.auth)
+        const node = this
+        const logger = new netatmoLogger()
 
-      api.on("error", function (error) {
-        console.error('homeStatus - ' + error);
-      });
+        this.on('input', function (msg) {
+            const api = this.auth.api
+            const payload = _preparePayload(config, msg)
 
-      api.on("warning", function (warning) {
-        console.error('homeStatus - ' + warning);
-      });
-    });
-  }
+            api.homeStatus(payload, (err, home) => {
+                if (err) {
+                    msg.payload = {
+                        status: "error",
+                        code: err.name,
+                        message: err.message,
+                    }
+                } else {
+                    msg.payload = {home: home, status: "ok"}
+                }
+                node.send(msg)
+            })
 
-  RED.nodes.registerType("homestatus", NetatmoHomeStatus);
-};
+            api.on("error", function (error) {
+                logger.error(error.name, `[homeStatus] - ${error}`)
+            })
+
+            api.on("warning", function (warning) {
+                logger.warn(`[homeStatus] - ${warning}`)
+            })
+        })
+    }
+
+    RED.nodes.registerType("homestatus", NetatmoHomeStatus)
+}

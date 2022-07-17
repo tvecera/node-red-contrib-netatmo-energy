@@ -21,14 +21,11 @@ module.exports = function (RED) {
 
         return {
             home_id: data.home_id ? data.home_id : config.home_id,
-            room_id: data.room_id ? data.room_id : config.room_id,
-            temp: data.temp ? data.temp : config.temp,
-            mode: data.mode ? data.mode : config.mode,
-            endtime: data.endtime ? data.endtime : config.endtime,
+            schedule_id: data.schedule_id ? data.schedule_id : config.schedule_id,
         }
     }
 
-    function NetatmoSetRoomThermPoint(config) {
+    function NetatmoSwitchHomeSchedule(config) {
         RED.nodes.createNode(this, config)
         this.auth = RED.nodes.getNode(config.auth)
         const node = this
@@ -38,7 +35,7 @@ module.exports = function (RED) {
             const api = this.auth.api
             const payload = _preparePayload(config, msg)
 
-            api.setRoomThermPoint(payload, (err, result) => {
+            api.switchHomeSchedule(payload, (err, result) => {
                 if (err) {
                     msg.payload = {
                         status: "error",
@@ -52,14 +49,14 @@ module.exports = function (RED) {
             })
 
             api.on("error", function (error) {
-                logger.error(error.name, `[setRoomThermPoint] - ${error}`)
+                logger.error(error.name, `[switchHomeSchedule] - ${error}`)
             })
 
             api.on("warning", function (warning) {
-                logger.warn(`[setRoomThermPoint] - ${warning}`)
+                logger.warn(`[switchHomeSchedule] - ${warning}`)
             })
         })
     }
 
-    RED.nodes.registerType("setroomthermpoint", NetatmoSetRoomThermPoint)
+    RED.nodes.registerType("switchhomeschedule", NetatmoSwitchHomeSchedule)
 }

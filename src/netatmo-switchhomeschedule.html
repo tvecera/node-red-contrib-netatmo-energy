@@ -12,25 +12,25 @@
   limitations under the License.
 -->
 <script type="text/javascript">
-    RED.nodes.registerType('homestatus', {
+    RED.nodes.registerType('switchhomeschedule', {
         category: 'Netatmo Energy',
         color: '#FECC49',
         defaults: {
             name: {value: ''},
             auth: {value: '', type: 'netatmoconfig'},
             home_id: {value: '', required: true},
-            device_types: {value: '', required: false},
+            schedule_id: {value: '', required: true},
         },
         inputs: 1,
         outputs: 1,
         icon: 'bridge.png',
         label: function () {
-            return this.name || 'homestatus'
+            return this.name || 'switchhomeschedule'
         },
-    });
+    })
 </script>
 
-<script data-template-name="homestatus" type="text/x-red">
+<script data-template-name="switchhomeschedule" type="text/x-red">
     <h4>Netatmo configuration</h4>
     <div class="form-row">
         <label for="node-input-auth"><i class="icon-tag"></i> Config</label>
@@ -41,25 +41,21 @@
         <input type="text" id="node-input-home_id" placeholder="5bb52472c8bd............">
     </div>
     <div class="form-row">
-        <label for="node-input-device_types"><i class="icon-tag"></i> Device types</label>
-        <select id="node-input-device_types" placeholder="NAPlug" multiple>
-            <option value="NAPlug">NAPlug</option>
-            <option value="OTH">OTH</option>
-            <option value="BNS">BNS</option>
-        </select>
+        <label for="node-input-schedule_id"><i class="icon-tag"></i> Schedule ID</label>
+        <input type="text" id="node-input-schedule_id" placeholder="5bdcb0458c04............">
     </div>
     <h4>Node configuration</h4>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="homestatus">
+        <input type="text" id="node-input-name" placeholder="setthermmode">
     </div>
 </script>
 
-<script data-help-name="homestatus" type="text/x-red">
-   <p>This node returns current status and data measured for all home devices.</p>
-   <p>Documentation: <a href="https://dev.netatmo.com/apidocumentation/energy#homestatus">https://dev.netatmo.com/apidocumentation/energy#homestatus</a></p>
+<script data-help-name="setthermmode" type="text/x-red">
+   <p>This node switches the home schedule to the given schedule.</p>
+   <p>Documentation: <a href="https://dev.netatmo.com/apidocumentation/energy#switchhomeschedule">https://dev.netatmo.com/apidocumentation/energy#switchhomeschedule</a></p>
    <ul>
-     <li><strong>home_id</strong> - (required) Id of the home</li>
-     <li><strong>device_types</strong> - (Optional) Array of device type, eg. NAPlug</li>
+     <li><b>home_id</b> - (required) Id of the home</li>
+     <li><b>schedule_id</b> - (required) Id of the schedule to switch on</li>
    </ul>
 </script>

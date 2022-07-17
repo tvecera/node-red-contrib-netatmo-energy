@@ -1,13 +1,13 @@
 {
   "name": "node-red-contrib-netatmo-energy",
-  "version": "0.0.3",
+  "version": "0.9.0",
   "description": "A node-red to interact with Netatmo thermostat",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tvecera/node-red-contrib-netatmo-energy.git"
   },
-  "author": "Tomas Vecera",
+  "author": "Tomas Vecera, info@tomasvecera.cz",
   "bugs": {
     "url": "https://github.com/tvecera/node-red-contrib-netatmo-energy/issues"
   },
@@ -16,10 +16,10 @@
     "test": "mocha"
   },
   "dependencies": {
-    "dateformat": "^2.0.0",
-    "request": "^2.88.0",
-    "moment": "^2.22.2",
-    "mocha": "^5.2.0"
+    "dateformat": "^5.0.3",
+    "request": "^2.88.2",
+    "moment": "^2.29.4",
+    "mocha": "^10.0.0"
   },
   "keywords": [
     "node-red",
@@ -34,7 +34,8 @@
       "netatmo-homestatus": "src/netatmo-homestatus.js",
       "netatmo-setthermmode": "src/netatmo-setthermmode.js",
       "netatmo-setroomthermpoint": "src/netatmo-setroomthermpoint.js",
-      "netatmo-getroommeasure": "src/netatmo-getroommeasure.js"
+      "netatmo-getroommeasure": "src/netatmo-getroommeasure.js",
+      "netatmo-switchhomeschedule": "src/netatmo-switchhomeschedule.js"
     }
   }
 }

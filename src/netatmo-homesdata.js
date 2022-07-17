@@ -1,5 +1,5 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -11,32 +11,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const netatmoLogger = require("./netatmo-logger")
+
 module.exports = function (RED) {
-  "use strict";
+    "use strict"
 
-  function NetatmoHomesData(config) {
+    function _preparePayload(config, inputMessage) {
+        let data = inputMessage && inputMessage.payload ? inputMessage.payload : config
 
-    RED.nodes.createNode(this, config);
-    this.auth = RED.nodes.getNode(config.auth);
-    const node = this;
+        return {
+            home_id: data.home_id ? data.home_id : config.home_id,
+            gateway_types: data.gateway_types ? data.gateway_types : config.gateway_types,
+        }
+    }
 
-    this.on('input', function (msg) {
-      const api = this.auth.api
+    function NetatmoHomesData(config) {
+        RED.nodes.createNode(this, config)
+        this.auth = RED.nodes.getNode(config.auth)
+        const node = this
+        const logger = new netatmoLogger()
 
-      api.homesData((err, homes) => {
-        msg.payload = { homes: homes };
-        node.send(msg);
-      });
+        this.on('input', function (msg) {
+            const api = this.auth.api
+            const payload = _preparePayload(config, msg)
 
-      api.on("error", function (error) {
-        console.error('homesData - ' + error);
-      });
+            api.homesData(payload, (err, homes) => {
+                if (err) {
+                    msg.payload = {
+                        status: "error",
+                        code: err.name,
+                        message: err.message,
+                    }
+                } else {
+                    msg.payload = {homes: homes, status: "ok"}
+                }
+                node.send(msg)
+            })
 
-      api.on("warning", function (warning) {
-        console.error('homesData - ' + warning);
-      });
-    });
-  }
+            api.on("error", function (error) {
+                logger.error(error.name, `[homesData] - ${error}`)
+            })
 
-  RED.nodes.registerType("homesdata", NetatmoHomesData);
-};
+            api.on("warning", function (warning) {
+                logger.warn(`[homesData] - ${warning}`)
+            })
+        })
+    }
+
+    RED.nodes.registerType("homesdata", NetatmoHomesData)
+}

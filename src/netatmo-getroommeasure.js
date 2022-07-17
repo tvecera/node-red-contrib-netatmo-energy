@@ -1,5 +1,5 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -11,84 +11,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const netatmoLogger = require("./netatmo-logger")
+
 module.exports = function (RED) {
-  "use strict";
+    "use strict"
 
-  function NetatmoGetRoomMeasure(config) {
+    function _preparePayload(config, inputMessage) {
+        let data = inputMessage && inputMessage.payload ? inputMessage.payload : config
 
-    RED.nodes.createNode(this, config);
-    this.auth = RED.nodes.getNode(config.auth);
-    const node = this;
+        return {
+            home_id: data.home_id ? data.home_id : config.home_id,
+            room_id: data.room_id ? data.room_id : config.room_id,
+            scale: data.scale ? data.scale : config.scale,
+            type: data.type ? data.measure_type : config.measure_type,
+            date_begin: data.date_begin ? data.date_begin : config.date_begin,
+            date_end: data.date_end ? data.date_end : config.date_end,
+            limit: data.limit ? data.limit : config.limit,
+            optimize: data.optimize ? data.optimize : config.optimize,
+            real_time: data.real_time ? data.real_time : config.real_time,
+        }
+    }
 
-    this.on('input', function (msg) {
-      const netatmo = require('./netatmo-energy-api.js');
-      const api = new netatmo(this.auth);
+    function NetatmoGetRoomMeasure(config) {
+        RED.nodes.createNode(this, config)
+        this.auth = RED.nodes.getNode(config.auth)
+        const node = this
+        const logger = new netatmoLogger()
 
-      let payload = {
-        home_id: config.home_id,
-        room_id: config.room_id,
-        scale: config.scale,
-        type: config.measure_type,
-        date_begin: config.date_begin,
-        date_end: config.date_end,
-        limit: config.limit,
-        optimize: config.optimize,
-        real_time: config.real_time,
-      };
+        this.on('input', function (msg) {
+            const api = this.auth.api
+            const payload = _preparePayload(config, msg)
+            console.log(payload)
 
-      if (msg && msg.payload) {
-        // use home id from msg payload
-        if (msg.payload.home_id) {
-          payload.home_id = msg.payload.home_id;
-        }
-        // use room_id from msg payload
-        if (msg.payload.room_id) {
-          payload.room_id = msg.payload.room_id;
-        }
-        // use scale from msg payload
-        if (msg.payload.scale) {
-          payload.scale = msg.payload.scale;
-        }
-        // use measure_type from msg payload
-        if (msg.payload.measure_type) {
-          payload.type = msg.payload.measure_type;
-        }
-        // use date_begin from msg payload
-        if (msg.payload.date_begin) {
-          payload.date_begin = msg.payload.date_begin;
-        }
-        // use date_end from msg payload
-        if (msg.payload.date_end) {
-          payload.date_end = msg.payload.date_end;
-        }
-        // use limit from msg payload
-        if (msg.payload.limit) {
-          payload.limit = msg.payload.limit;
-        }
-        // use optimize from msg payload
-        if (msg.payload.optimize) {
-          payload.optimize = msg.payload.optimize;
-        }
-        // use real_time from msg payload
-        if (msg.payload.real_time) {
-          payload.real_time = msg.payload.real_time;
-        }
-      }
+            api.getRoomMeasure(payload, (err, body) => {
+                if (err) {
+                    msg.payload = {
+                        status: "error",
+                        code: err.name,
+                        message: err.message,
+                    }
+                } else {
+                    msg.payload = {data: body, status: "ok"}
+                }
+                node.send(msg)
+            })
 
-      api.getRoomMeasure(payload, (err, body) => {
-        msg.payload = { body: body };
-        node.send(msg);
-      });
+            api.on("error", function (error) {
+                logger.error(error.name, `[getRoomMeasure] - ${error}`)
+            })
 
-      api.on("error", function (error) {
-        console.error('getroommeasure - ' + error);
-      });
+            api.on("warning", function (warning) {
+                logger.warn(`[getRoomMeasure] - ${warning}`)
+            })
+        })
+    }
 
-      api.on("warning", function (warning) {
-        console.error('getroommeasure - ' + warning);
-      });
-    });
-  }
-
-  RED.nodes.registerType("getroommeasure", NetatmoGetRoomMeasure);
-};
+    RED.nodes.registerType("getroommeasure", NetatmoGetRoomMeasure)
+}

@@ -1,5 +1,5 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -11,53 +11,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const netatmoLogger = require("./netatmo-logger")
+
 module.exports = function (RED) {
-  "use strict";
+    "use strict"
 
-  function NetatmoSetThermMode(config) {
+    function _preparePayload(config, inputMessage) {
+        let data = inputMessage && inputMessage.payload ? inputMessage.payload : config
 
-    RED.nodes.createNode(this, config);
-    this.auth = RED.nodes.getNode(config.auth);
-    const node = this;
-
-    this.on('input', function (msg) {
-      const api = this.auth.api
-
-      let payload = {
-        home_id: config.home_id,
-        mode: config.mode,
-        endtime: config.endtime,
-      };
-
-      if (msg && msg.payload) {
-        // use home id from msg payload
-        if (msg.payload.home_id) {
-          payload.home_id = msg.payload.home_id;
+        return {
+            home_id: data.home_id ? data.home_id : config.home_id,
+            mode: data.mode ? data.mode : config.mode,
+            endtime: data.endtime ? data.endtime : config.endtime,
         }
-        // use mode from msg payload
-        if (msg.payload.mode) {
-          payload.mode = msg.payload.mode;
-        }
-        // use endtime from msg payload
-        if (msg.payload.endtime) {
-          payload.endtime = msg.payload.endtime;
-        }
-      }
+    }
 
-      api.setThermMode(payload, (err, result) => {
-        msg.payload = result;
-        node.send(msg);
-      });
+    function NetatmoSetThermMode(config) {
+        RED.nodes.createNode(this, config)
+        this.auth = RED.nodes.getNode(config.auth)
+        const node = this
+        const logger = new netatmoLogger()
 
-      api.on("error", function (error) {
-        console.error('setThermMode - ' + error);
-      });
+        this.on('input', function (msg) {
+            const api = this.auth.api
+            const payload = _preparePayload(config, msg)
 
-      api.on("warning", function (warning) {
-        console.error('setThermMode - ' + warning);
-      });
-    });
-  }
+            api.setThermMode(payload, (err, result) => {
+                if (err) {
+                    msg.payload = {
+                        status: "error",
+                        code: err.name,
+                        message: err.message,
+                    }
+                } else {
+                    msg.payload = result
+                }
+                node.send(msg)
+            })
 
-  RED.nodes.registerType("setthermmode", NetatmoSetThermMode);
-};
+            api.on("error", function (error) {
+                logger.error(error.name, `[setThermMode] - ${error}`)
+            })
+
+            api.on("warning", function (warning) {
+                logger.warn(`[setThermMode] - ${warning}`)
+            })
+        })
+    }
+
+    RED.nodes.registerType("setthermmode", NetatmoSetThermMode)
+}
