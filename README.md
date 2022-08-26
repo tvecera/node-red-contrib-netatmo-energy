@@ -12,10 +12,17 @@
 
 # Node-RED nodes to talk to the Netatmo thermostat
 
-[![npm version](https://img.shields.io/npm/v/node-red-contrib-netatmo-energy.svg?maxAge=2592000)](https://www.npmjs.com/package/node-red-contrib-netatmo-energy) [![Downloads](https://img.shields.io/npm/dm/node-red-contrib-netatmo-energy.svg?maxAge=2592000)](https://www.npmjs.com/package/node-red-contrib-netatmo-energy)
+[![npm version](https://img.shields.io/npm/v/node-red-contrib-netatmo-energy.svg?maxAge=259200)](https://www.npmjs.com/package/node-red-contrib-netatmo-energy) [![Downloads](https://img.shields.io/npm/dm/node-red-contrib-netatmo-energy.svg?maxAge=259200)](https://www.npmjs.com/package/node-red-contrib-netatmo-energy)
 [![Build Status](https://travis-ci.org/tvecera/node-red-contrib-netatmo-energy.svg?branch=main)](https://travis-ci.org/tvecera/node-red-contrib-netatmo-energy)
 
-Library using forked netatmo library - https://github.com/karbassi/netatmo.
+## Version 0.9.1 - The client Credentials grant type removal.
+
+Switch to Netatmo OAUTH2 authorization. Netatmo is removing username and password authorization at the end of September 2022 - [https://dev.netatmo.com/apidocumentation/oauth#authorization-code](https://dev.netatmo.com/apidocumentation/oauth#authorization-code). So it was necessary to switch from the "Client credentials grant type" to the "Authorization code grant type" method.
+
+You must obtain a Netatmo API refresh token to make this node work. You can get it manually or use the simple command line program Netatmo Auth CLI.
+
+After setting up the refresh token, the node already obtains and renews the access token itself.
+
 
 Tested with:
 
@@ -131,12 +138,15 @@ Documentation: https://dev.netatmo.com/apidocumentation/energy#getroommeasure
 * **home_id** - (required) Id of the home
 * **room_id** - (required) Id of the room
 * **scale** - (required) Step between measurements. Values: 30min, 1hour, 3hours, 1day, 1week, 1month, max
-* **type** - (required) Type of requested measurements. Values: temperature, sp_temperature, min_temp, max_temp, date_min_temp
+* **type** - (required) Type of requested measurements. Values: temperature, sp_temperature, min_temp, max_temp,
+  date_min_temp
 * **date_begin** - (Optional) Timestamp of the first measure to retrieve. Default is null.
 * **date_end** - (Optional) Timestamp of the last measure to retrieve (default and max are 1024). Default is null.
 * **limit** - (Optional) Maximum number of measurements (default and max Are 1024)
-* **optimize** - (Optional) Determines the format of the answer. Default is true. For mobile apps we recommend True and False if bandwidth isn't an issue as it is easier to parse.
-* **real_time** - (Optional) If scale different than max, timestamps are by default offset + scale/2. To get exact timestamps, use true. Default is false
+* **optimize** - (Optional) Determines the format of the answer. Default is true. For mobile apps we recommend True and
+  False if bandwidth isn't an issue as it is easier to parse.
+* **real_time** - (Optional) If scale different than max, timestamps are by default offset + scale/2. To get exact
+  timestamps, use true. Default is false
 
 ## Node SWITCHHOMESCHEDULE
 
@@ -154,5 +164,7 @@ Documentation: https://dev.netatmo.com/apidocumentation/energy#switchhomeschedul
 Node config can be overwritten by message payload.
 
 ## License
+
+Library using forked netatmo library - https://github.com/karbassi/netatmo.
 
 The Apache License, Version 2.0

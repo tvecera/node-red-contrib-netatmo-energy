@@ -18,8 +18,7 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config)
         this.client_id = config.client_id
         this.client_secret = config.client_secret
-        this.username = config.username
-        this.password = config.password
+        this.refresh_token = config.refresh_token
         const netatmo = require('./netatmo-energy-api.js')
         this.api = new netatmo(this)
     }

@@ -17,8 +17,7 @@
         defaults: {
             client_id: {value: '', required: true},
             client_secret: {value: '', required: true},
-            username: {value: '', required: true},
-            password: {value: '', required: true}
+            refresh_token: {value: '', required: true},
         },
         label: function () {
             return "Netatmo credentials";
@@ -29,19 +28,15 @@
 <script data-template-name="netatmoconfig" type="text/x-red">
     <div class="form-row">
         <label for="node-config-input-client_id"><i class="icon-tag"></i>&nbsp;Client ID</label>
-        <input type="text" id="node-config-input-client_id" placeholder="5aa68c8378c75f55558beb9c">
+        <input type="password" id="node-config-input-client_id">
     </div>
     <div class="form-row">
         <label for="node-config-input-client_secret"><i class="icon-tag"></i>&nbsp;Client Secret</label>
-        <input type="text" id="node-config-input-client_secret" placeholder="GtSLOdTh4RkJKLi6klLbesOBltPKHHY8TA">
+        <input type="password" id="node-config-input-client_secret">
     </div>
     <div class="form-row">
-        <label for="node-config-input-username"><i class="icon-tag"></i>&nbsp;User name</label>
-        <input type="text" id="node-config-input-username" placeholder="your@email.com">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-password"><i class="icon-tag"></i>&nbsp;Password</label>
-        <input type="password" id="node-config-input-password" placeholder="password">
+        <label for="node-config-input-refresh_token"><i class="icon-tag"></i>&nbsp;Refresh Token</label>
+        <input type="password" id="node-config-input-refresh_token">
     </div>
 </script>
 

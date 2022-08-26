@@ -11,8 +11,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const netatmoLogger = require("./netatmo-logger")
-
 module.exports = function (RED) {
     "use strict"
 
@@ -30,11 +28,10 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config)
         this.auth = RED.nodes.getNode(config.auth)
         const node = this
-        const logger = new netatmoLogger()
 
         this.on('input', function (msg) {
-            const api = this.auth.api
             const payload = _preparePayload(config, msg)
+            const api = this.auth.api
 
             api.setThermMode(payload, (err, result) => {
                 if (err) {
@@ -47,14 +44,6 @@ module.exports = function (RED) {
                     msg.payload = result
                 }
                 node.send(msg)
-            })
-
-            api.on("error", function (error) {
-                logger.error(error.name, `[setThermMode] - ${error}`)
-            })
-
-            api.on("warning", function (warning) {
-                logger.warn(`[setThermMode] - ${warning}`)
             })
         })
     }

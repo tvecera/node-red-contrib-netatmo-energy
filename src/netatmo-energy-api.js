@@ -64,65 +64,34 @@ class Netatmo extends EventEmitter {
      * @returns {Netatmo}
      */
     authenticate(args, callback = undefined) {
-        const url = util.format('%s/oauth2/token', BASE_URL)
-
         if (!args) {
             this.emit("error", new Error("Authenticate 'args' not set."))
             return this
         }
 
-        const {access_token, client_id, client_secret, username, password, scope} = args
+        const {client_id, client_secret, refresh_token} = args
 
-        // client_id and client_id are mandatory configuration fields
+        // client_id and client_secret are mandatory configuration fields
         if (!client_id || !client_secret) {
             this.emit("error", new Error("Authenticate 'client_id' or 'client_secret' not set."))
             return this
         }
 
-        // username and password are mandatory configuration fields
-        if (!username || !password) {
-            this.emit("error", new Error("Authenticate 'username' od 'password' not set."))
-            return this
-        }
-
-        // access token from msg payload
-        if (access_token) {
-            this.access_token = access_token
+        // refresh_token are mandatory configuration field
+        if (!refresh_token) {
+            this.emit("error", new Error("Refresh token not set."))
             return this
         }
 
         this.client_id = client_id
         this.client_secret = client_secret
-        this.username = username
-        this.password = password
-        this.scope = scope || 'read_thermostat write_thermostat'
+        this.refresh_token = refresh_token
 
-        const form = {
-            client_id: this.client_id,
-            client_secret: this.client_secret,
-            username: this.username,
-            password: this.password,
-            scope: this.scope,
-            grant_type: 'password',
+        this.refreshToken(refresh_token)
+
+        if (callback) {
+            return callback()
         }
-
-        request({
-            url: url,
-            method: "POST",
-            form: form,
-        }, function (err, response, body) {
-            if (err || response.statusCode !== 200) {
-                return this.handleRequestError(response, body, "Authenticate error", false)
-            }
-
-            this.bindRefreshToken(body)
-            this.emit('authenticated')
-            if (callback) {
-                return callback()
-            }
-
-            return this
-        }.bind(this))
 
         return this
     }
@@ -152,6 +121,7 @@ class Netatmo extends EventEmitter {
             }
 
             this.bindRefreshToken(body)
+            this.emit('authenticated')
 
             return this
         }.bind(this))
@@ -167,6 +137,7 @@ class Netatmo extends EventEmitter {
         let body = JSON.parse(resultBody)
         const {access_token, expires_in, refresh_token} = body
         this.access_token = access_token
+        this.refresh_token = refresh_token
 
         if (expires_in) {
             setTimeout(this.refreshToken.bind(this), expires_in * 1000, refresh_token)
@@ -204,6 +175,10 @@ class Netatmo extends EventEmitter {
             logger.error(error.name, error.message)
         } else {
             logger.warn(error.message)
+        }
+
+        if (response.statusCode === 403 && errorCode === "3") {
+            this.refreshToken(this.refresh_token);
         }
 
         return error
