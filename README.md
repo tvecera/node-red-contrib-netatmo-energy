@@ -19,7 +19,7 @@
 
 Switch to Netatmo OAUTH2 authorization. Netatmo is removing username and password authorization at the end of September 2022 - [https://dev.netatmo.com/apidocumentation/oauth#authorization-code](https://dev.netatmo.com/apidocumentation/oauth#authorization-code). So it was necessary to switch from the "Client credentials grant type" to the "Authorization code grant type" method.
 
-You must obtain a Netatmo API refresh token to make this node work. You can get it manually or use the simple command line program Netatmo Auth CLI.
+You must obtain a Netatmo API refresh token to make this node work. You can get it manually or use the simple command line program [Netatmo Auth CLI](https://github.com/tvecera/netatmo-auth-cli).
 
 After setting up the refresh token, the node already obtains and renews the access token itself.
 
