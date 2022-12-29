@@ -177,7 +177,7 @@ class Netatmo extends EventEmitter {
             logger.warn(error.message)
         }
 
-        if (response.statusCode === 403 && errorCode === "3") {
+        if (response && response.statusCode === 403 && errorCode === "3") {
             this.refreshToken(this.refresh_token);
         }
 
