@@ -47,7 +47,7 @@ const EventEmitter = require("events").EventEmitter
 const request = require('request')
 const netatmoLogger = require("./netatmo-logger");
 
-const BASE_URL = 'https://api.netatmo.net'
+const BASE_URL = 'https://api.netatmo.com'
 const logger = new netatmoLogger()
 
 class Netatmo extends EventEmitter {
